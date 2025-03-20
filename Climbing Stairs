@@ -1,0 +1,35 @@
+class Solution {
+    /**
+     * 🚀 Approach:
+     * 1️⃣ This is a **Dynamic Programming (DP) problem** where we need to find the number of ways 
+     *     to climb `n` stairs if we can take **1 step or 2 steps at a time**.
+     * 2️⃣ We define `dp[i]` as the number of ways to reach step `i`.
+     * 3️⃣ **Base Cases**:
+     *    - `dp[0] = 1` (1 way to stay at ground level)
+     *    - `dp[1] = 1` (Only 1 way to reach step 1)
+     * 4️⃣ **Recurrence Relation**:
+     *    - `dp[i] = dp[i - 1] + dp[i - 2]`
+     *    - This follows the Fibonacci sequence logic because at each step, we can arrive from 
+     *      either `i-1` or `i-2`.
+     * 5️⃣ **Final Answer**: `dp[n]` gives the total ways to reach the `n-th` step.
+     * 
+     * ✅ **Time Complexity**: O(N) → We compute each `dp[i]` once.
+     * ✅ **Space Complexity**: O(N) → We use an array `dp[]` of size `n+1`.
+     */
+
+    public int climbStairs(int n) {
+        // DP array to store the number of ways to reach each step
+        int dp[] = new int[n + 1]; // We need dp[n] as the final answer
+
+        // Fill the dp array
+        for (int i = 0; i <= n; i++) {
+            if (i == 0 || i == 1) {
+                dp[i] = 1; // Base cases: Only one way to reach step 0 and step 1
+            } else {
+                dp[i] = dp[i - 1] + dp[i - 2]; // Number of ways from (i-1) and (i-2)
+            }
+        }
+
+        return dp[n]; // Return the total ways to reach step `n`
+    }
+}
