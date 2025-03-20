@@ -1,0 +1,42 @@
+class Solution {
+    public int minimizeCost(int k, int arr[]) {
+
+        /*  
+        ----------------------- APPROACH -----------------------
+        - This problem is a **generalized Frog Jump** problem where the frog can jump **up to k steps**.
+        - We use **Dynamic Programming (DP)** to find the minimum cost required to reach the last index.
+        - The energy required to reach index `i` is the **minimum** of:
+            - Jumping from any previous `j`th stone (where `1 ≤ j ≤ k`):
+              `dp[i] = min(dp[i-j] + |arr[i] - arr[i-j]|)`, for valid `i-j`
+        - Our goal is to **minimize** the total cost required to reach the last stone.
+        --------------------------------------------------------
+        */
+
+        int dp[] = new int[arr.length]; // DP array to store min cost for each stone
+        dp[0] = 0; // Base case: No cost required at the starting position
+
+        for (int i = 1; i < arr.length; i++) {
+            int minSteps = Integer.MAX_VALUE;
+
+            // Check all possible jumps from i-1 to i-k
+            for (int j = 1; j <= k; j++) {
+                if ((i - j) >= 0) {
+                    int jump = dp[i - j] + Math.abs(arr[i] - arr[i - j]);
+                    minSteps = Math.min(minSteps, jump);
+                }
+            }
+
+            dp[i] = minSteps; // Store the minimum cost for reaching stone `i`
+        }
+
+        return dp[arr.length - 1]; // Minimum cost required to reach the last stone
+    }
+}
+
+/* 
+------------------ TIME COMPLEXITY ANALYSIS ------------------
+- **Outer loop runs from `1` to `N-1`** → O(N)
+- **Inner loop runs up to `k` times** → O(k)
+- **Total Complexity:** O(N * k) ✅ (Efficient for moderate values of k)
+---------------------------------------------------------------
+*/
