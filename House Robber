@@ -1,0 +1,50 @@
+class Solution {
+    public int rob(int[] nums) {
+
+        /*
+        ----------------------- APPROACH -----------------------
+        - This is a **Dynamic Programming (DP)** problem where:
+          - A robber cannot rob two adjacent houses.
+          - The goal is to maximize the total amount robbed.
+        
+        - We use a **dp[] array** where:
+          - `dp[i]` represents the **maximum amount** that can be robbed up to house `i`.
+        
+        - For each house `i`, we have **two choices**:
+          1. **Do not rob house `i`** → Keep the max from the previous house (`dp[i-1]`).
+          2. **Rob house `i`** → Add its value (`nums[i]`) to `dp[i-2]` (skipping adjacent house).
+
+        - Transition formula:
+          `dp[i] = max(nums[i] + dp[i-2], dp[i-1])`
+        
+        - Base cases:
+          - `dp[0] = nums[0]` → If only one house, rob it.
+          - `dp[1] = max(nums[0], nums[1])` → Choose max of first two houses.
+        
+                
+                 TIME COMPLEXITY ANALYSIS
+        - **Loop runs from `1` to `N-1`** → O(N)
+        - **Space Complexity:** O(N) (due to `dp[]` array)
+        - **Optimized Space Complexity:** O(1) if we only use two variables instead of `dp[]`.
+        --------------------------------------------------------
+        */
+
+        if (nums.length == 1) return nums[0]; // Edge case: Only one house
+
+        int dp[] = new int[nums.length]; // DP array to store max profit at each house
+        dp[0] = nums[0]; // Base case: First house's value
+
+        for (int i = 1; i < dp.length; i++) {
+            int notPick = dp[i - 1]; // Don't rob this house
+            int pick = nums[i]; // Rob this house
+
+            if (i - 2 >= 0) {
+                pick += dp[i - 2]; // Add value from the non-adjacent house
+            }
+
+            dp[i] = Math.max(pick, notPick); // Store the max profit at house `i`
+        }
+
+        return dp[nums.length - 1]; // Max money that can be robbed
+    }
+}
